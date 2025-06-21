@@ -53,9 +53,17 @@ int main() {
         return 1;
     }
 
+    // --- PREPARA ARQUIVO PARA GRAVAR UTILIZAÇÃO POR ITERAÇÃO ---
+    std::ofstream futil("utilizacao_vs_clientes.txt");
+    if (!futil) {
+        std::cerr << "Erro ao criar utilizacao_vs_clientes.txt\n";
+        return 1;
+    }
+
     // Laço principal do MVA: itera de n=1 até N_customers
     for (int n = 1; n <= N_customers; ++n) {
         std::vector<double> R_i_current(K_resources);
+        std::vector<double> U_i_current(K_resources);
         double R_0_current = 0.0;
 
         // Passo A: Calcular R_i(n) para cada recurso
@@ -83,18 +91,27 @@ int main() {
         }
         fresp << "\n";
 
+        // --- GRAVA UTILIZAÇÃO DE CADA RECURSO PARA ESTA ITERAÇÃO ---
+        futil << n;
+        for (int k = 0; k < K_resources; ++k) {
+            U_i_current[k] = S[k] * V[k] * X_0_current;
+            futil << " " << std::fixed << std::setprecision(6) << U_i_current[k];
+        }
+        futil << "\n";
+
         // Se esta for a última iteração, guarda os resultados finais
         if (n == N_customers) {
             R_i_final = R_i_current;
             R_0_final = R_0_current;
             X_0_final = X_0_current;
             for (int k = 0; k < K_resources; ++k) {
-                U_i_final[k] = S[k] * V[k] * X_0_final;
+                U_i_final[k] = U_i_current[k];
             }
         }
     } // Fim do laço principal do MVA
 
     fresp.close();
+    futil.close();
 
     // --- APRESENTAÇÃO DOS RESULTADOS ---
     std::ofstream fout("output.txt");
