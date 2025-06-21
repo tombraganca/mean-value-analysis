@@ -52,6 +52,11 @@ int main() {
         std::cerr << "Erro ao criar resposta_vs_clientes.txt\n";
         return 1;
     }
+    fresp << "N";
+    for (const auto& name : resource_names) {
+        fresp << " " << name;
+    }
+    fresp << "\n";
 
     // --- PREPARA ARQUIVO PARA GRAVAR UTILIZAÇÃO POR ITERAÇÃO ---
     std::ofstream futil("utilizacao_vs_clientes.txt");
@@ -59,6 +64,11 @@ int main() {
         std::cerr << "Erro ao criar utilizacao_vs_clientes.txt\n";
         return 1;
     }
+    futil << "N";
+    for (const auto& name : resource_names) {
+        futil << " " << name;
+    }
+    futil << "\n";
 
     // Laço principal do MVA: itera de n=1 até N_customers
     for (int n = 1; n <= N_customers; ++n) {

@@ -1,1 +1,5 @@
-g++ ../main.cpp -o ../build/main && ../build/main
+rm -rf ../build
+mkdir -p ../build
+
+
+g++ main.cpp -o main && main
