@@ -1,0 +1,5 @@
+4
+3
+Musculacao 5 2
+Esteira 8 2
+Bicicleta 4 2

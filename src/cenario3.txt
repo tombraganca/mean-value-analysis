@@ -1,0 +1,5 @@
+7
+3
+Pagamento 4 2
+Saque 2 1
+Deposito 10 1

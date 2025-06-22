@@ -1,0 +1,5 @@
+15
+3
+CPU 7 3
+DISCO 9 2
+Impressora 4 2
