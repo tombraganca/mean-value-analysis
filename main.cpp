@@ -3,6 +3,9 @@
 #include <string>
 #include <iomanip> // Para formatar a saída (casas decimais, etc.)
 #include <fstream>   // Para ler arquivos e gravar arquivos
+#include <sys/stat.h> // Para mkdir
+#include <sys/types.h>
+#include <unistd.h>
 
 int main() {
     // --- COLETA DE DADOS ---
@@ -46,10 +49,17 @@ int main() {
     double X_0_final = 0.0;
 
 
+    // --- CRIA DIRETÓRIO DE SAÍDA SE NÃO EXISTIR ---
+    std::string output_dir = "output";
+    struct stat st = {0};
+    if (stat(output_dir.c_str(), &st) == -1) {
+        mkdir(output_dir.c_str(), 0755);
+    }
+
     // --- PREPARA ARQUIVO PARA GRAVAR TEMPO DE RESPOSTA POR ITERAÇÃO ---
-    std::ofstream fresp("resposta_vs_clientes.txt");
+    std::ofstream fresp((output_dir + "/resposta_vs_clientes.txt").c_str());
     if (!fresp) {
-        std::cerr << "Erro ao criar resposta_vs_clientes.txt\n";
+        std::cerr << "Erro ao criar " << output_dir << "/resposta_vs_clientes.txt\n";
         return 1;
     }
     fresp << "N";
@@ -59,9 +69,9 @@ int main() {
     fresp << "\n";
 
     // --- PREPARA ARQUIVO PARA GRAVAR UTILIZAÇÃO POR ITERAÇÃO ---
-    std::ofstream futil("utilizacao_vs_clientes.txt");
+    std::ofstream futil((output_dir + "/utilizacao_vs_clientes.txt").c_str());
     if (!futil) {
-        std::cerr << "Erro ao criar utilizacao_vs_clientes.txt\n";
+        std::cerr << "Erro ao criar " << output_dir << "/utilizacao_vs_clientes.txt\n";
         return 1;
     }
     futil << "N";
@@ -124,9 +134,9 @@ int main() {
     futil.close();
 
     // --- APRESENTAÇÃO DOS RESULTADOS ---
-    std::ofstream fout("output.txt");
+    std::ofstream fout((output_dir + "/output.txt").c_str());
     if (!fout) {
-        std::cerr << "Erro ao criar output.txt\n";
+        std::cerr << "Erro ao criar " << output_dir << "/output.txt\n";
         return 1;
     }
 
@@ -156,6 +166,6 @@ int main() {
 
     fout.close();
 
-    std::cout << "Resultados gravados em output.txt\n";
+    std::cout << "Resultados gravados em " << output_dir << "/output.txt\n";
     return 0;
 }
